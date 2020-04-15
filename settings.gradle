@@ -1,0 +1,3 @@
+rootProject.name='FancyDialog'
+include ':app'
+include ':FancyDialog'
