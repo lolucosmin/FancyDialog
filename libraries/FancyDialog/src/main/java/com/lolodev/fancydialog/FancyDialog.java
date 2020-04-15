@@ -58,7 +58,7 @@ public class FancyDialog extends BottomSheetDialogFragment {
     private OnNeutralClickListener dialogNeutralButtonCallback;
     private OnNegativeClickListener dialogNegativeButtonCallback;
 
-    private boolean isCancelable;
+    private boolean isCancelable = true;
 
     private View customView;
 
@@ -71,6 +71,7 @@ public class FancyDialog extends BottomSheetDialogFragment {
     private AppCompatButton dialogNegativeButton;
     private AppCompatButton dialogPositiveButton;
     private LinearLayoutCompat dialogCustomViewContainer;
+    private LinearLayoutCompat dialogParent;
 
     public static FancyDialog newInstance() {
         return new FancyDialog();
@@ -87,7 +88,6 @@ public class FancyDialog extends BottomSheetDialogFragment {
         final View rootView = View.inflate(getContext(), R.layout.dialog_content, null);
         addInitItems(rootView);
         addOnPrepareItems(dialog);
-
 
         dialog.setContentView(rootView);
         rootView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -129,6 +129,8 @@ public class FancyDialog extends BottomSheetDialogFragment {
     }
 
     private void addInitItems(@NonNull View view) {
+        this.dialogParent = view.findViewById(R.id.dialog_parent);
+
         this.dialogIconParent = view.findViewById(R.id.dialog_icon_parent);
         this.dialogIcon = view.findViewById(R.id.dialog_icon);
 
@@ -145,6 +147,8 @@ public class FancyDialog extends BottomSheetDialogFragment {
     }
 
     private void addOnPrepareItems(Dialog dialog) {
+        //background
+        this.dialogParent.setBackgroundColor(this.backgroundColor);
 
         //icon
         if (this.iconRes != 0 || this.iconBitmap != null || this.iconDrawable != null) {
