@@ -27,14 +27,14 @@ import androidx.fragment.app.FragmentTransaction;
 @SuppressWarnings("ConstantConditions")
 public class FancyProgressDialog extends DialogFragment {
 
-    private int primaryColor;
+    private int primaryColor = Color.WHITE;
     private int secondaryColor = Color.WHITE;
     private int resIcon = 0;
     private Bitmap resIconAsBitmap;
     private String message;
     private int messageColor = Color.WHITE;
     private int messageTxtSize = 16;
-    private int indeterminateColor;
+    private int indeterminateColor = Color.MAGENTA;
     private static FancyProgressDialog currentInstance;
 
     public static FancyProgressDialog getInstance() {
@@ -50,7 +50,6 @@ public class FancyProgressDialog extends DialogFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setStyle(DialogFragment.STYLE_NORMAL, R.style.AppProgressDialogheme);
-        this.primaryColor = ContextCompat.getColor(getContext(), R.color.colorPrimary);
         this.indeterminateColor = ContextCompat.getColor(getContext(), R.color.colorAccent);
     }
 
