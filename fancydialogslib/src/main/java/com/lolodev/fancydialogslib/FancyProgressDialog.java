@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,25 +17,23 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.blankj.utilcode.util.ColorUtils;
-import com.blankj.utilcode.util.ScreenUtils;
-
 @SuppressWarnings("ConstantConditions")
 public class FancyProgressDialog extends DialogFragment {
 
-    private int primaryColor = ColorUtils.getColor(R.color.colorPrimary);
+    private int primaryColor = ContextCompat.getColor(getContext(), R.color.colorPrimary);
     private int secondaryColor = Color.WHITE;
     private int resIcon = 0;
     private Bitmap resIconAsBitmap;
     private String message;
     private int messageColor = Color.WHITE;
     private int messageTxtSize = 16;
-    private int indeterminateColor = ColorUtils.getColor(R.color.colorAccent);
+    private int indeterminateColor = ContextCompat.getColor(getContext(), R.color.colorAccent);
 
     public static FancyProgressDialog newInstance() {
         return new FancyProgressDialog();
@@ -49,8 +48,12 @@ public class FancyProgressDialog extends DialogFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.progress_dialog_content, container);
-        view.setMinimumHeight(ScreenUtils.getScreenHeight());
-        view.setMinimumWidth(ScreenUtils.getScreenWidth());
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        int width = displayMetrics.widthPixels;
+        int height = displayMetrics.heightPixels;
+        view.setMinimumWidth(width);
+        view.setMinimumHeight(height);
         setCancelable(false);
         return view;
     }
