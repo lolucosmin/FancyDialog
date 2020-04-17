@@ -1,6 +1,5 @@
 package com.lolodev.fancydialogslib;
 
-import android.content.DialogInterface;
 import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -13,12 +12,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
+import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.cardview.widget.CardView;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -50,7 +49,6 @@ public class FancyProgressDialog extends DialogFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setStyle(DialogFragment.STYLE_NORMAL, R.style.AppProgressDialogheme);
-        this.indeterminateColor = ContextCompat.getColor(getContext(), R.color.colorAccent);
     }
 
     @Override
@@ -153,12 +151,12 @@ public class FancyProgressDialog extends DialogFragment {
         currentInstance = null;
     }
 
-    public FancyProgressDialog setPrimaryColor(int primaryColor) {
+    public FancyProgressDialog setPrimaryColor(@ColorInt int primaryColor) {
         this.primaryColor = primaryColor;
         return this;
     }
 
-    public FancyProgressDialog setSecondaryColor(int secondaryColor) {
+    public FancyProgressDialog setSecondaryColor(@ColorInt int secondaryColor) {
         this.secondaryColor = secondaryColor;
         return this;
     }
@@ -178,7 +176,7 @@ public class FancyProgressDialog extends DialogFragment {
         return this;
     }
 
-    public FancyProgressDialog setMessageColor(int messageColor) {
+    public FancyProgressDialog setMessageColor(@ColorInt int messageColor) {
         this.messageColor = messageColor;
         return this;
     }
@@ -188,7 +186,7 @@ public class FancyProgressDialog extends DialogFragment {
         return this;
     }
 
-    public FancyProgressDialog setIndeterminateColor(int indeterminateColor) {
+    public FancyProgressDialog setIndeterminateColor(@ColorInt int indeterminateColor) {
         this.indeterminateColor = indeterminateColor;
         return this;
     }
