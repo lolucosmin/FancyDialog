@@ -1,5 +1,6 @@
 package com.lolodev.fancydialogslib;
 
+import android.content.DialogInterface;
 import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -26,23 +27,31 @@ import androidx.fragment.app.FragmentTransaction;
 @SuppressWarnings("ConstantConditions")
 public class FancyProgressDialog extends DialogFragment {
 
-    private int primaryColor = ContextCompat.getColor(getContext(), R.color.colorPrimary);
+    private int primaryColor;
     private int secondaryColor = Color.WHITE;
     private int resIcon = 0;
     private Bitmap resIconAsBitmap;
     private String message;
     private int messageColor = Color.WHITE;
     private int messageTxtSize = 16;
-    private int indeterminateColor = ContextCompat.getColor(getContext(), R.color.colorAccent);
+    private int indeterminateColor;
+    private static FancyProgressDialog currentInstance;
 
-    public static FancyProgressDialog newInstance() {
-        return new FancyProgressDialog();
+    public static FancyProgressDialog getInstance() {
+        if (currentInstance == null) {
+            currentInstance = new FancyProgressDialog();
+            return currentInstance;
+        } else {
+            return currentInstance;
+        }
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setStyle(DialogFragment.STYLE_NORMAL, R.style.AppProgressDialogheme);
+        this.primaryColor = ContextCompat.getColor(getContext(), R.color.colorPrimary);
+        this.indeterminateColor = ContextCompat.getColor(getContext(), R.color.colorAccent);
     }
 
     @Override
@@ -120,6 +129,7 @@ public class FancyProgressDialog extends DialogFragment {
         } catch (Exception ex) {
             Log.e(FancyProgressDialog.this.getClass().getSimpleName(), ex.getMessage());
         }
+        currentInstance = null;
     }
 
     @Override
@@ -130,6 +140,7 @@ public class FancyProgressDialog extends DialogFragment {
         } catch (Exception ex) {
             Log.e(FancyProgressDialog.this.getClass().getSimpleName(), ex.getMessage());
         }
+        currentInstance = null;
     }
 
     @Override
@@ -140,6 +151,7 @@ public class FancyProgressDialog extends DialogFragment {
         } catch (Exception ex) {
             Log.e(FancyProgressDialog.this.getClass().getSimpleName(), ex.getMessage());
         }
+        currentInstance = null;
     }
 
     public FancyProgressDialog setPrimaryColor(int primaryColor) {
