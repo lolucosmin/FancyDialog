@@ -1,8 +1,9 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <style name="DialogSheetTheme" parent="Theme.AppCompat.NoActionBar">
+    <style name="AppDialogSheetTheme" parent="@style/Theme.MaterialComponents.BottomSheetDialog">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowIsFloating">false</item>
         <item name="android:colorBackground">@android:color/transparent</item>
         <item name="android:statusBarColor" tools:targetApi="21">@android:color/transparent</item>
         <item name="android:navigationBarColor">@color/colorNavigationBar</item>
@@ -13,6 +14,17 @@
     <style name="WindowTransition">
         <item name="android:windowEnterAnimation">@anim/dialog_show</item>
         <item name="android:windowExitAnimation">@anim/dialog_dismiss</item>
+    </style>
+
+    <style name="AppProgressDialogheme" parent="@style/Theme.AppCompat.Dialog">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:background">@android:color/transparent</item>
     </style>
 
 </resources>

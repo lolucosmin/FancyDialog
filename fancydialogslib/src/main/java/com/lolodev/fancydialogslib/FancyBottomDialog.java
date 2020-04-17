@@ -1,4 +1,4 @@
-package com.lolodev.fancydialog;
+package com.lolodev.fancydialogslib;
 
 import android.app.Dialog;
 import android.graphics.Bitmap;
@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
 
@@ -21,6 +22,7 @@ import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.cardview.widget.CardView;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -28,7 +30,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 @SuppressWarnings({"UnusedReturnValue", "unused", "FieldCanBeLocal", "ConstantConditions"})
-public class FancyDialog extends BottomSheetDialogFragment {
+public class FancyBottomDialog extends BottomSheetDialogFragment {
 
     private int backgroundNavigationBarColor = Color.BLACK;
     private int backgroundColor = Color.WHITE;
@@ -41,9 +43,11 @@ public class FancyDialog extends BottomSheetDialogFragment {
 
     private String dialogTitleValue;
     private int dialogTitleTextColor = Color.BLACK;
+    private int dialogTitleTxtSize = 18;
 
     private String dialogMessageValue;
     private int dialogMessageColor = Color.BLACK;
+    private int dialogMessageTxtSize = 14;
 
     private String dialogPositiveButtonValue;
     private String dialogNeutralButtonValue;
@@ -53,13 +57,13 @@ public class FancyDialog extends BottomSheetDialogFragment {
     private int buttonPositiveTxtColor = Color.BLACK;
     private int buttonNeutralTxtColor = Color.BLACK;
     private int buttonNegativeTxtColor = Color.BLACK;
+    private int buttonsTxtSize = 16;
 
     private OnPositiveClickListener dialogPositiveButtonCallback;
     private OnNeutralClickListener dialogNeutralButtonCallback;
     private OnNegativeClickListener dialogNegativeButtonCallback;
 
     private boolean isCancelable = true;
-
     private View customView;
 
     private CardView dialogIconParent;
@@ -73,14 +77,14 @@ public class FancyDialog extends BottomSheetDialogFragment {
     private LinearLayoutCompat dialogCustomViewContainer;
     private LinearLayoutCompat dialogParent;
 
-    public static FancyDialog newInstance() {
-        return new FancyDialog();
+    public static FancyBottomDialog newInstance() {
+        return new FancyBottomDialog();
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setStyle(STYLE_NORMAL, R.style.DialogSheetTheme);
+        setStyle(STYLE_NORMAL, R.style.AppDialogSheetTheme);
     }
 
     @Override
@@ -117,14 +121,49 @@ public class FancyDialog extends BottomSheetDialogFragment {
         setCancelable(this.isCancelable);
     }
 
+    private String universalTag = FancyBottomDialog.this.getClass().getSimpleName();
+
     @Override
     public void show(@NonNull FragmentManager manager, @Nullable String tag) {
         try {
-            FragmentTransaction fragmentTransaction = manager.beginTransaction();
-            fragmentTransaction.add(this, tag);
-            fragmentTransaction.commitAllowingStateLoss();
+            Fragment fragment = manager.findFragmentByTag(this.universalTag);
+            if (fragment == null) {
+                FragmentTransaction fragmentTransaction = manager.beginTransaction();
+                fragmentTransaction.add(this, this.universalTag);
+                fragmentTransaction.commitAllowingStateLoss();
+            }
         } catch (Exception ex) {
-            Log.e(FancyDialog.this.getClass().getSimpleName(), ex.getMessage());
+            Log.e(FancyBottomDialog.this.getClass().getSimpleName(), ex.getMessage());
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        try {
+            dismissAllowingStateLoss();
+        } catch (Exception ex) {
+            Log.e(FancyBottomDialog.this.getClass().getSimpleName(), ex.getMessage());
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        try {
+            dismissAllowingStateLoss();
+        } catch (Exception ex) {
+            Log.e(FancyBottomDialog.this.getClass().getSimpleName(), ex.getMessage());
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        try {
+            dismissAllowingStateLoss();
+        } catch (Exception ex) {
+            Log.e(FancyBottomDialog.this.getClass().getSimpleName(), ex.getMessage());
         }
     }
 
@@ -175,6 +214,7 @@ public class FancyDialog extends BottomSheetDialogFragment {
             this.dialogTitle.setText(this.dialogTitleValue);
             this.dialogTitle.setTextColor(this.dialogTitleTextColor);
         }
+        this.dialogTitle.setTextSize(this.dialogTitleTxtSize > 0 ? this.dialogTitleTxtSize : 18);
 
         //message
         if (TextUtils.isEmpty(this.dialogMessageValue)) {
@@ -184,6 +224,7 @@ public class FancyDialog extends BottomSheetDialogFragment {
             this.dialogMessage.setText(this.dialogMessageValue);
             this.dialogMessage.setTextColor(this.dialogMessageColor);
         }
+        this.dialogMessage.setTextSize(this.dialogMessageTxtSize > 0 ? this.dialogMessageTxtSize : 14);
 
         //positive button
         this.dialogPositiveButton.setText(this.dialogPositiveButtonValue != null ? this.dialogPositiveButtonValue : "");
@@ -197,6 +238,7 @@ public class FancyDialog extends BottomSheetDialogFragment {
                 }
             }
         });
+        this.dialogPositiveButton.setTextColor(this.buttonPositiveTxtColor);
 
 
         //neutral button
@@ -211,6 +253,7 @@ public class FancyDialog extends BottomSheetDialogFragment {
                 }
             }
         });
+        this.dialogNeutralButton.setTextColor(this.buttonNeutralTxtColor);
 
         //negative button
         this.dialogNegativeButton.setText(this.dialogNegativeButtonValue != null ? this.dialogNegativeButtonValue : "");
@@ -224,9 +267,16 @@ public class FancyDialog extends BottomSheetDialogFragment {
                 }
             }
         });
+        this.dialogNegativeButton.setTextColor(this.buttonNegativeTxtColor);
 
-        //custom view
+        this.dialogPositiveButton.setTextSize(this.buttonsTxtSize > 0 ? this.buttonsTxtSize : 16);
+        this.dialogNeutralButton.setTextSize(this.buttonsTxtSize > 0 ? this.buttonsTxtSize : 16);
+        this.dialogNegativeButton.setTextSize(this.buttonsTxtSize > 0 ? this.buttonsTxtSize : 16);
+
         if (this.customView != null) {
+            if (this.customView.getParent() != null) {
+                ((ViewGroup) this.customView.getParent()).removeView(this.customView);
+            }
             this.dialogCustomViewContainer.removeAllViews();
             this.dialogCustomViewContainer.addView(this.customView);
             this.dialogCustomViewContainer.setVisibility(View.VISIBLE);
@@ -238,19 +288,19 @@ public class FancyDialog extends BottomSheetDialogFragment {
 
     //----------------Icon Part--------------------
 
-    public FancyDialog setIcon(@DrawableRes int icon, int color) {
+    public FancyBottomDialog setIcon(@DrawableRes int icon, int color) {
         this.iconRes = icon;
         this.iconBackground = color;
         return this;
     }
 
-    public FancyDialog setIcon(@Nullable Drawable icon, int color) {
+    public FancyBottomDialog setIcon(@Nullable Drawable icon, int color) {
         this.iconDrawable = icon;
         this.iconBackground = color;
         return this;
     }
 
-    public FancyDialog setIcon(@Nullable Bitmap icon, int color) {
+    public FancyBottomDialog setIcon(@Nullable Bitmap icon, int color) {
         this.iconBitmap = icon;
         this.iconBackground = color;
         return this;
@@ -258,31 +308,41 @@ public class FancyDialog extends BottomSheetDialogFragment {
 
     //----------------Title Part--------------------
 
-    public FancyDialog setTitle(String title) {
+    public FancyBottomDialog setTitle(String title) {
         this.dialogTitleValue = title;
         return this;
     }
 
-    public FancyDialog setTitleTextColor(@ColorInt int titleTextColor) {
+    public FancyBottomDialog setTitleTextColor(@ColorInt int titleTextColor) {
         this.dialogTitleTextColor = titleTextColor;
+        return this;
+    }
+
+    public FancyBottomDialog setTitleTxtSize(int size) {
+        this.dialogTitleTxtSize = size;
         return this;
     }
 
     //----------------Message Part--------------------
 
-    public FancyDialog setMessage(String message) {
+    public FancyBottomDialog setMessage(String message) {
         this.dialogMessageValue = message;
         return this;
     }
 
-    public FancyDialog setMessageTextColor(@ColorInt int messageTextColor) {
+    public FancyBottomDialog setMessageTextColor(@ColorInt int messageTextColor) {
         this.dialogMessageColor = messageTextColor;
+        return this;
+    }
+
+    public FancyBottomDialog setMessageTxtSize(int size) {
+        this.dialogMessageTxtSize = size;
         return this;
     }
 
     //----------------Positive Button Part--------------------
 
-    public FancyDialog setPositiveButton(String text, OnPositiveClickListener onPositiveClickListener) {
+    public FancyBottomDialog setPositiveButton(String text, OnPositiveClickListener onPositiveClickListener) {
         this.dialogPositiveButtonValue = text;
         this.dialogPositiveButtonCallback = onPositiveClickListener;
         return this;
@@ -290,7 +350,7 @@ public class FancyDialog extends BottomSheetDialogFragment {
 
     //----------------Neutral Button Part--------------------
 
-    public FancyDialog setNeutralButton(String text, OnNeutralClickListener onNegativeClickListener) {
+    public FancyBottomDialog setNeutralButton(String text, OnNeutralClickListener onNegativeClickListener) {
         this.dialogNeutralButtonValue = text;
         this.dialogNeutralButtonCallback = onNegativeClickListener;
         return this;
@@ -298,7 +358,7 @@ public class FancyDialog extends BottomSheetDialogFragment {
 
     //----------------Negative Button Part--------------------
 
-    public FancyDialog setNegativeButton(String text, OnNegativeClickListener onNegativeClickListener) {
+    public FancyBottomDialog setNegativeButton(String text, OnNegativeClickListener onNegativeClickListener) {
         this.dialogNegativeButtonValue = text;
         this.dialogNegativeButtonCallback = onNegativeClickListener;
         return this;
@@ -320,55 +380,60 @@ public class FancyDialog extends BottomSheetDialogFragment {
 
     //----------------Buttons Functions Part--------------------
 
-    public FancyDialog setButtonsTextAllCaps(boolean textAllCaps) {
+    public FancyBottomDialog setButtonsTextAllCaps(boolean textAllCaps) {
         this.buttonsTextAllCaps = textAllCaps;
         return this;
     }
 
-    public FancyDialog setButtonPositiveTxtColor(@ColorInt int color) {
+    public FancyBottomDialog setButtonPositiveTxtColor(@ColorInt int color) {
         this.buttonPositiveTxtColor = color;
         return this;
     }
 
-    public FancyDialog setButtonNeutralTxtColor(@ColorInt int color) {
+    public FancyBottomDialog setButtonNeutralTxtColor(@ColorInt int color) {
         this.buttonNeutralTxtColor = color;
         return this;
     }
 
-    public FancyDialog setButtonNegativeTxtColor(@ColorInt int color) {
+    public FancyBottomDialog setButtonNegativeTxtColor(@ColorInt int color) {
         this.buttonNegativeTxtColor = color;
+        return this;
+    }
+
+    public FancyBottomDialog setButtonsTxtSize(int size) {
+        this.buttonsTxtSize = size;
         return this;
     }
 
     //----------------Background Functions Part--------------------
 
-    public FancyDialog setBackgroundColor(@ColorInt int backgroundColor) {
+    public FancyBottomDialog setBackgroundColor(@ColorInt int backgroundColor) {
         this.backgroundColor = backgroundColor;
         return this;
     }
 
-    public FancyDialog setBackgroundRoundCorners(boolean backgroundCorners) {
+    public FancyBottomDialog setBackgroundRoundCorners(boolean backgroundCorners) {
         this.backgroundCorners = backgroundCorners;
         return this;
     }
 
     //----------------Navigation Bar Functions Part--------------------
 
-    public FancyDialog setBackgroundNavigationBar(@ColorInt int backgroundNavigationBarColor) {
+    public FancyBottomDialog setBackgroundNavigationBar(@ColorInt int backgroundNavigationBarColor) {
         this.backgroundNavigationBarColor = backgroundNavigationBarColor;
         return this;
     }
 
     //----------------Custom View Part--------------------
 
-    public FancyDialog setView(View view) {
+    public FancyBottomDialog setView(View view) {
         this.customView = view;
         return this;
     }
 
     //----------------Others Functions Part--------------------
 
-    public FancyDialog setIsCancelable(boolean cancelable) {
+    public FancyBottomDialog setIsCancelable(boolean cancelable) {
         this.isCancelable = cancelable;
         return this;
     }

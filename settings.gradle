@@ -1,3 +1,2 @@
-include ':app', ':FancyDialog'
-project(':FancyDialog').projectDir = new File('libraries/FancyDialog')
-
+include ':app'
+include ':fancydialogslib'
