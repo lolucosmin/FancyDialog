@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="FancyProgressView">
+        <attr name="progressPrimaryBackground" format="color" />
+        <attr name="progressSecondaryBackground" format="color" />
+        <attr name="progressLoadImage" format="reference" />
+        <attr name="progressLoadBar" format="color" />
+        <attr name="progressLoadMessage" format="reference" />
+        <attr name="progressLoadMessageColor" format="color" />
+        <attr name="progressLoadMessageSize" format="dimension" />
+    </declare-styleable>
+</resources>

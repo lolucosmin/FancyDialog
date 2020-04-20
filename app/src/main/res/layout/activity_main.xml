@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -9,9 +10,16 @@
         android:id="@+id/open_dialog"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Open Dialog"
         android:layout_gravity="end"
+        android:text="Open Dialog"
         android:visibility="visible"
         tools:ignore="HardcodedText" />
+
+    <com.lolodev.fancydialogslib.FancyProgressView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:progressLoadBar="@android:color/holo_red_dark"
+        app:progressPrimaryBackground="@android:color/black"
+        app:progressSecondaryBackground="@android:color/holo_blue_light" />
 
 </FrameLayout>
