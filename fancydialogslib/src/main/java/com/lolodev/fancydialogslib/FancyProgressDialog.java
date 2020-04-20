@@ -1,23 +1,17 @@
 package com.lolodev.fancydialogslib;
 
-import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.AppCompatImageView;
-import androidx.appcompat.widget.AppCompatTextView;
-import androidx.cardview.widget.CardView;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -67,39 +61,27 @@ public class FancyProgressDialog extends DialogFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        CardView progress_primary_background = view.findViewById(R.id.progress_primary_background);
-        CardView progress_secondary_background = view.findViewById(R.id.progress_secondary_background);
-        AppCompatImageView progress_load_image = view.findViewById(R.id.progress_load_image);
-        ProgressBar progress_load_bar = view.findViewById(R.id.progress_load_bar);
-        AppCompatTextView progress_load_message = view.findViewById(R.id.progress_load_message);
+        FancyProgressView fancyProgressView = view.findViewById(R.id.fancy_progress_view);
 
         //backgrounds part
-        progress_primary_background.setCardBackgroundColor(this.primaryColor);
-        progress_secondary_background.setCardBackgroundColor(this.secondaryColor);
+        fancyProgressView.setPrimaryColor(this.primaryColor);
+        fancyProgressView.setSecondaryColor(this.secondaryColor);
 
         //icon part
         if (this.resIconAsBitmap != null) {
-            progress_load_image.setImageBitmap(this.resIconAsBitmap);
+            fancyProgressView.setResIcon(this.resIconAsBitmap);
 
         } else if (this.resIcon != 0) {
-            progress_load_image.setImageResource(this.resIcon);
+            fancyProgressView.setResIcon(this.resIcon);
         }
 
         //progress bar
-        ColorStateList colorStateList = ColorStateList.valueOf(this.indeterminateColor);
-        progress_load_bar.setProgressTintList(colorStateList);
-        progress_load_bar.setSecondaryProgressTintList(colorStateList);
-        progress_load_bar.setIndeterminateTintList(colorStateList);
+        fancyProgressView.setIndeterminateColor(this.indeterminateColor);
 
         //message part
-        if (!TextUtils.isEmpty(this.message)) {
-            progress_load_message.setText(String.valueOf(this.message));
-            progress_load_message.setTextColor(this.messageColor);
-            progress_load_message.setVisibility(View.VISIBLE);
-            progress_load_message.setTextSize(this.messageTxtSize > 0 ? this.messageTxtSize : 16);
-        } else {
-            progress_load_message.setVisibility(View.GONE);
-        }
+        fancyProgressView.setMessage(this.message);
+        fancyProgressView.setMessageColor(this.messageColor);
+        fancyProgressView.setMessageTxtSize(this.messageTxtSize);
     }
 
     private String universalTag = FancyProgressDialog.this.getClass().getSimpleName();

@@ -7,7 +7,9 @@ import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
@@ -19,6 +21,7 @@ import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.cardview.widget.CardView;
 
+@SuppressWarnings({"ConstantConditions", "UnusedReturnValue"})
 public class FancyProgressView extends FrameLayout {
 
     private CardView progressPrimaryBackground;
@@ -31,14 +34,14 @@ public class FancyProgressView extends FrameLayout {
     @SuppressLint("InflateParams")
     public FancyProgressView(Context context) {
         super(context);
-        addView(LayoutInflater.from(context).inflate(R.layout.progress_dialog_content, null));
+        addView(LayoutInflater.from(context).inflate(R.layout.progress_content, null));
         addInitItems();
     }
 
     @SuppressLint("InflateParams")
     public FancyProgressView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        addView(LayoutInflater.from(context).inflate(R.layout.progress_dialog_content, null));
+        addView(LayoutInflater.from(context).inflate(R.layout.progress_content, null));
         this.typedArray = context.obtainStyledAttributes(attrs, R.styleable.FancyProgressView, 0, 0);
         addInitItems();
     }
@@ -46,7 +49,7 @@ public class FancyProgressView extends FrameLayout {
     @SuppressLint("InflateParams")
     public FancyProgressView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        addView(LayoutInflater.from(context).inflate(R.layout.progress_dialog_content, null));
+        addView(LayoutInflater.from(context).inflate(R.layout.progress_content, null));
         this.typedArray = context.obtainStyledAttributes(attrs, R.styleable.FancyProgressView, 0, 0);
         addInitItems();
     }
@@ -54,7 +57,7 @@ public class FancyProgressView extends FrameLayout {
     @SuppressLint("InflateParams")
     public FancyProgressView(Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
-        addView(LayoutInflater.from(context).inflate(R.layout.progress_dialog_content, null));
+        addView(LayoutInflater.from(context).inflate(R.layout.progress_content, null));
         this.typedArray = context.obtainStyledAttributes(attrs, R.styleable.FancyProgressView, 0, 0);
         addInitItems();
     }
@@ -82,54 +85,95 @@ public class FancyProgressView extends FrameLayout {
 
     //-----------Backgrounds Part-------------
     public FancyProgressView setPrimaryColor(@ColorInt int primaryColor) {
-        this.progressPrimaryBackground.setCardBackgroundColor(primaryColor);
+        try {
+            this.progressPrimaryBackground.setCardBackgroundColor(primaryColor);
+        } catch (Exception ex) {
+            Log.e(FancyProgressView.VIEW_LOG_TAG, ex.getMessage());
+        }
         return this;
     }
 
     public FancyProgressView setSecondaryColor(@ColorInt int secondaryColor) {
-        this.progressSecondaryBackground.setCardBackgroundColor(secondaryColor);
+        try {
+            this.progressSecondaryBackground.setCardBackgroundColor(secondaryColor);
+        } catch (Exception ex) {
+            Log.e(FancyProgressView.VIEW_LOG_TAG, ex.getMessage());
+        }
         return this;
     }
 
 
     //-----------Icon Part-------------
     public FancyProgressView setResIcon(@DrawableRes int resIcon) {
-        this.progressLoadImage.setImageResource(resIcon);
+        try {
+            this.progressLoadImage.setImageResource(resIcon);
+        } catch (Exception ex) {
+            Log.e(FancyProgressView.VIEW_LOG_TAG, ex.getMessage());
+        }
         return this;
     }
 
     public FancyProgressView setResIcon(Bitmap resIcon) {
-        this.progressLoadImage.setImageBitmap(resIcon);
+        try {
+            this.progressLoadImage.setImageBitmap(resIcon);
+        } catch (Exception ex) {
+            Log.e(FancyProgressView.VIEW_LOG_TAG, ex.getMessage());
+        }
         return this;
     }
 
     public FancyProgressView setResIcon(Drawable resIcon) {
-        this.progressLoadImage.setImageDrawable(resIcon);
+        try {
+            this.progressLoadImage.setImageDrawable(resIcon);
+        } catch (Exception ex) {
+            Log.e(FancyProgressView.VIEW_LOG_TAG, ex.getMessage());
+        }
         return this;
     }
 
     //-----------Message Part-------------
     public FancyProgressView setMessage(String message) {
-        this.progressLoadMessage.setText(message);
+        try {
+            if (!TextUtils.isEmpty(message)) {
+                this.progressLoadMessage.setVisibility(VISIBLE);
+                this.progressLoadMessage.setText(message);
+            } else {
+                this.progressLoadMessage.setVisibility(GONE);
+            }
+        } catch (Exception ex) {
+            Log.e(FancyProgressView.VIEW_LOG_TAG, ex.getMessage());
+        }
         return this;
     }
 
     public FancyProgressView setMessageColor(@ColorInt int messageColor) {
-        this.progressLoadMessage.setTextColor(messageColor);
+        try {
+            this.progressLoadMessage.setTextColor(messageColor);
+        } catch (Exception ex) {
+            Log.e(FancyProgressView.VIEW_LOG_TAG, ex.getMessage());
+        }
         return this;
     }
 
     public FancyProgressView setMessageTxtSize(int messageTxtSize) {
-        this.progressLoadMessage.setTextSize(messageTxtSize);
+        try {
+            this.progressLoadMessage.setTextSize(messageTxtSize > 0 ? messageTxtSize : 16);
+        } catch (Exception ex) {
+            Log.e(FancyProgressView.VIEW_LOG_TAG, ex.getMessage());
+        }
         return this;
     }
 
     //-----------ProgressBar Part-------------
     public FancyProgressView setIndeterminateColor(@ColorInt int indeterminateColor) {
-        ColorStateList colorStateList = ColorStateList.valueOf(indeterminateColor);
-        progressLoadBar.setProgressTintList(colorStateList);
-        progressLoadBar.setSecondaryProgressTintList(colorStateList);
-        progressLoadBar.setIndeterminateTintList(colorStateList);
+        try {
+            ColorStateList colorStateList = ColorStateList.valueOf(indeterminateColor);
+            progressLoadBar.setProgressTintList(colorStateList);
+            progressLoadBar.setSecondaryProgressTintList(colorStateList);
+            progressLoadBar.setIndeterminateTintList(colorStateList);
+        } catch (Exception ex) {
+            Log.e(FancyProgressView.VIEW_LOG_TAG, ex.getMessage());
+        }
         return this;
     }
 }
