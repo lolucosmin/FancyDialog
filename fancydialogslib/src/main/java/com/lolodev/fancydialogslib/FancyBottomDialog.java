@@ -3,6 +3,7 @@ package com.lolodev.fancydialogslib;
 import android.app.Dialog;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -16,12 +17,14 @@ import androidx.annotation.ColorInt;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.cardview.widget.CardView;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -29,7 +32,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
-@SuppressWarnings({"UnusedReturnValue", "unused", "FieldCanBeLocal", "ConstantConditions"})
+@SuppressWarnings({"UnusedReturnValue", "unused", "FieldCanBeLocal", "ConstantConditions", "rawtypes"})
 public class FancyBottomDialog extends BottomSheetDialogFragment {
 
     private int backgroundNavigationBarColor = Color.BLACK;
@@ -108,12 +111,7 @@ public class FancyBottomDialog extends BottomSheetDialogFragment {
 
         //background
         if (dialog.getWindow() != null) {
-            FrameLayout bottomSheet = dialog.getWindow().findViewById(com.google.android.material.R.id.design_bottom_sheet);
-            if (this.backgroundCorners) {
-                bottomSheet.setBackgroundResource(R.drawable.dialog_sheet_round_background);
-            } else {
-                bottomSheet.setBackgroundResource(R.drawable.dialog_sheet_background);
-            }
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             dialog.getWindow().setNavigationBarColor(this.backgroundNavigationBarColor);
         }
 
@@ -187,7 +185,17 @@ public class FancyBottomDialog extends BottomSheetDialogFragment {
 
     private void addOnPrepareItems(Dialog dialog) {
         //background
-        this.dialogParent.setBackgroundColor(this.backgroundColor);
+        if (this.backgroundCorners) {
+            Drawable unwrappedDrawable = AppCompatResources.getDrawable(getContext(), R.drawable.dialog_sheet_round_background);
+            Drawable wrappedDrawable = DrawableCompat.wrap(unwrappedDrawable);
+            DrawableCompat.setTint(wrappedDrawable, this.backgroundColor);
+            this.dialogParent.setBackground(wrappedDrawable);
+        } else {
+            Drawable unwrappedDrawable = AppCompatResources.getDrawable(getContext(), R.drawable.dialog_sheet_background);
+            Drawable wrappedDrawable = DrawableCompat.wrap(unwrappedDrawable);
+            DrawableCompat.setTint(wrappedDrawable, this.backgroundColor);
+            this.dialogParent.setBackground(wrappedDrawable);
+        }
 
         //icon
         if (this.iconRes != 0 || this.iconBitmap != null || this.iconDrawable != null) {
