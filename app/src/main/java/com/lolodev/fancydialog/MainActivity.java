@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
                         .setButtonNegativeTxtColor(Color.GREEN)
                         .setIsCancelable(true)
                         .setTitle("Title")
+                        .setIcon(R.drawable.dialog_log_in_out, Color.RED)
                         .setBackgroundRoundCorners(true)
                         .setMessage("Message")
                         .setPositiveButton("OK", new FancyBottomDialog.OnPositiveClickListener() {

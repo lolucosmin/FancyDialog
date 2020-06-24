@@ -39,8 +39,7 @@
                     android:layout_height="24dp"
                     android:layout_gravity="center"
                     android:adjustViewBounds="true"
-                    android:scaleType="centerCrop"
-                    app:tint="@color/colorPrimary" />
+                    android:scaleType="centerCrop" />
 
             </androidx.cardview.widget.CardView>
 
