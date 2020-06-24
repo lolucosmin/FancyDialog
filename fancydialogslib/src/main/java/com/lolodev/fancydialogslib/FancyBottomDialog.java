@@ -1,5 +1,6 @@
 package com.lolodev.fancydialogslib;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -7,6 +8,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -83,12 +85,12 @@ public class FancyBottomDialog extends BottomSheetDialogFragment {
 
     private View rootView;
 
-    public static FancyBottomDialog newInstance(Context context) {
-        return new FancyBottomDialog(context);
+    public static FancyBottomDialog newInstance(@NonNull Activity activity) {
+        return new FancyBottomDialog(activity);
     }
 
-    public FancyBottomDialog(Context context) {
-        this.rootView = View.inflate(context, R.layout.dialog_content, null);
+    public FancyBottomDialog(@NonNull Activity activity) {
+        this.rootView = View.inflate(activity, R.layout.dialog_content, null);
         addInitItems(this.rootView);
     }
 
@@ -133,14 +135,19 @@ public class FancyBottomDialog extends BottomSheetDialogFragment {
     private String universalTag = FancyBottomDialog.this.getClass().getSimpleName();
 
     @Override
-    public void show(@NonNull FragmentManager manager, @Nullable String tag) {
+    public void show(@NonNull final FragmentManager manager, @Nullable String tag) {
         try {
-            Fragment fragment = manager.findFragmentByTag(this.universalTag);
-            if (fragment == null) {
-                FragmentTransaction fragmentTransaction = manager.beginTransaction();
-                fragmentTransaction.add(this, this.universalTag);
-                fragmentTransaction.commitAllowingStateLoss();
-            }
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    Fragment fragment = manager.findFragmentByTag(universalTag);
+                    if (fragment == null) {
+                        FragmentTransaction fragmentTransaction = manager.beginTransaction();
+                        fragmentTransaction.add(FancyBottomDialog.this, universalTag);
+                        fragmentTransaction.commitAllowingStateLoss();
+                    }
+                }
+            }, 100);
         } catch (Exception ex) {
             Log.e(FancyBottomDialog.this.getClass().getSimpleName(), ex.getMessage());
         }

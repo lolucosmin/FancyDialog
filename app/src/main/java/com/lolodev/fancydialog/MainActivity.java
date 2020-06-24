@@ -2,6 +2,7 @@ package com.lolodev.fancydialog;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Toast;
 
@@ -28,13 +29,13 @@ public class MainActivity extends AppCompatActivity {
 //                        .setIndeterminateColor(Color.RED)
 //                        .show(getSupportFragmentManager(), "");
 
-                FancyBottomDialog fancyBottomDialog = FancyBottomDialog.newInstance(getBaseContext())
+                FancyBottomDialog fancyBottomDialog = FancyBottomDialog.newInstance(MainActivity.this)
                         .setBackgroundColor(Color.WHITE)
                         .setBackgroundNavigationBar(Color.RED)
                         .setButtonPositiveTxtColor(Color.BLUE)
                         .setButtonNegativeTxtColor(Color.GREEN)
                         .setIsCancelable(true)
-                        .setTitle("Title")
+                        .setTitle("Title o")
                         .setIcon(R.drawable.dialog_log_in_out, Color.RED)
                         .setBackgroundRoundCorners(true)
                         .setMessage("Message")
