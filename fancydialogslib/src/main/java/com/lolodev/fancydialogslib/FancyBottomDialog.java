@@ -11,7 +11,6 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
-import android.widget.FrameLayout;
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.DrawableRes;
@@ -67,6 +66,7 @@ public class FancyBottomDialog extends BottomSheetDialogFragment {
     private OnNegativeClickListener dialogNegativeButtonCallback;
 
     private boolean isCancelable = true;
+    private boolean dismissAfterActionWasPress = true;
     private View customView;
 
     private CardView dialogIconParent;
@@ -240,7 +240,10 @@ public class FancyBottomDialog extends BottomSheetDialogFragment {
         this.dialogPositiveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dismissAllowingStateLoss();
+                if (dismissAfterActionWasPress) {
+                    dismissAllowingStateLoss();
+                }
+
                 if (dialogPositiveButtonCallback != null) {
                     dialogPositiveButtonCallback.onClick(v);
                 }
@@ -255,7 +258,10 @@ public class FancyBottomDialog extends BottomSheetDialogFragment {
         this.dialogNeutralButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dismissAllowingStateLoss();
+                if (dismissAfterActionWasPress) {
+                    dismissAllowingStateLoss();
+                }
+
                 if (dialogNeutralButtonCallback != null) {
                     dialogNeutralButtonCallback.onClick(v);
                 }
@@ -269,7 +275,10 @@ public class FancyBottomDialog extends BottomSheetDialogFragment {
         this.dialogNegativeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dismissAllowingStateLoss();
+                if (dismissAfterActionWasPress) {
+                    dismissAllowingStateLoss();
+                }
+
                 if (dialogNegativeButtonCallback != null) {
                     dialogNegativeButtonCallback.onClick(v);
                 }
@@ -292,6 +301,10 @@ public class FancyBottomDialog extends BottomSheetDialogFragment {
             this.dialogCustomViewContainer.removeAllViews();
             this.dialogCustomViewContainer.setVisibility(View.VISIBLE);
         }
+    }
+
+    public void setDismissAfterActionWasPress(boolean dismissAfterActionWasPress) {
+        this.dismissAfterActionWasPress = dismissAfterActionWasPress;
     }
 
     //----------------Icon Part--------------------
@@ -444,5 +457,52 @@ public class FancyBottomDialog extends BottomSheetDialogFragment {
     public FancyBottomDialog setIsCancelable(boolean cancelable) {
         this.isCancelable = cancelable;
         return this;
+    }
+
+    //-----------Getters-------------
+
+
+    public View getCustomView() {
+        return customView;
+    }
+
+    public CardView getDialogIconParent() {
+        return dialogIconParent;
+    }
+
+    public AppCompatImageView getDialogIcon() {
+        return dialogIcon;
+    }
+
+    public AppCompatTextView getDialogTitle() {
+        return dialogTitle;
+    }
+
+    public LinearLayoutCompat getDialogMessageParent() {
+        return dialogMessageParent;
+    }
+
+    public AppCompatTextView getDialogMessage() {
+        return dialogMessage;
+    }
+
+    public AppCompatButton getDialogNeutralButton() {
+        return dialogNeutralButton;
+    }
+
+    public AppCompatButton getDialogNegativeButton() {
+        return dialogNegativeButton;
+    }
+
+    public AppCompatButton getDialogPositiveButton() {
+        return dialogPositiveButton;
+    }
+
+    public LinearLayoutCompat getDialogCustomViewContainer() {
+        return dialogCustomViewContainer;
+    }
+
+    public LinearLayoutCompat getDialogParent() {
+        return dialogParent;
     }
 }
