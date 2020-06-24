@@ -1,6 +1,7 @@
 package com.lolodev.fancydialogslib;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -80,8 +81,15 @@ public class FancyBottomDialog extends BottomSheetDialogFragment {
     private LinearLayoutCompat dialogCustomViewContainer;
     private LinearLayoutCompat dialogParent;
 
-    public static FancyBottomDialog newInstance() {
-        return new FancyBottomDialog();
+    private View rootView;
+
+    public static FancyBottomDialog newInstance(Context context) {
+        return new FancyBottomDialog(context);
+    }
+
+    public FancyBottomDialog(Context context) {
+        this.rootView = View.inflate(context, R.layout.dialog_content, null);
+        addInitItems(this.rootView);
     }
 
     @Override
@@ -90,14 +98,17 @@ public class FancyBottomDialog extends BottomSheetDialogFragment {
         setStyle(STYLE_NORMAL, R.style.AppDialogSheetTheme);
     }
 
+    @NonNull
+    @Override
+    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+        return super.onCreateDialog(savedInstanceState);
+    }
+
     @Override
     public void setupDialog(@NonNull Dialog dialog, int style) {
-        final View rootView = View.inflate(getContext(), R.layout.dialog_content, null);
-        addInitItems(rootView);
         addOnPrepareItems(dialog);
-
-        dialog.setContentView(rootView);
-        rootView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+        dialog.setContentView(this.rootView);
+        this.rootView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
                 rootView.getViewTreeObserver().removeOnGlobalLayoutListener(this);

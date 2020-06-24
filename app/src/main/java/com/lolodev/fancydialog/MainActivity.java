@@ -3,6 +3,7 @@ package com.lolodev.fancydialog;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
@@ -27,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
 //                        .setIndeterminateColor(Color.RED)
 //                        .show(getSupportFragmentManager(), "");
 
-                FancyBottomDialog.newInstance()
+                FancyBottomDialog fancyBottomDialog = FancyBottomDialog.newInstance(getBaseContext())
                         .setBackgroundColor(Color.WHITE)
                         .setBackgroundNavigationBar(Color.RED)
                         .setButtonPositiveTxtColor(Color.BLUE)
@@ -48,8 +49,8 @@ public class MainActivity extends AppCompatActivity {
                             public void onClick(View v) {
 
                             }
-                        })
-                        .show(getSupportFragmentManager(), "");
+                        });
+                fancyBottomDialog.show(getSupportFragmentManager(), "");
             }
         });
     }
